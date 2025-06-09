@@ -7,7 +7,7 @@ import Loader from "../Loader"
 export const AdminRoute = () =>{
     const [ok,setOk] = useState(false)
     const {auth} = useContext(AuthContext)
-
+    console.log(ok)
     useEffect(()=>{
         const authCheck = async () =>{
             const {data} = await axios.get("/api/v1/auth/admin-auth")
@@ -20,5 +20,6 @@ export const AdminRoute = () =>{
         }
         if(auth ?.token) authCheck()
     }, [auth?.token])
-    return ok ? <Outlet/> : <Loader path=""/>
+    // return ok ? <Outlet/> : <Loader path=""/>
+    return ok ? <Outlet/> : <Loader />
 }

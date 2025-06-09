@@ -11,6 +11,11 @@ import Dashboard from "./pages/user/Dashboard"
 import PrivateRoute from "./components/routes/PrivateRoute"
 import AdminDashboard from "./pages/admin/AdminDashboard"
 import { AdminRoute } from "./components/routes/AdminRoute"
+import { UserProfile } from "./pages/user/UserProfile"
+import UserOrders from "./pages/user/UserOrders"
+import ManageUsers from "./pages/admin/ManageUsers"
+import CreateCollection from "./pages/admin/CreateCollection"
+import CreateProduct from "./pages/admin/CreateProduct"
 
 function App() {
   
@@ -25,11 +30,21 @@ function App() {
           <Route path="login" element={<Login/>} />
           <Route path="signup" element={<SignUp/>} />
           <Route path="cart" element={<Cart/>} />
+          <Route>
           <Route path="dashboard" element={<PrivateRoute/> }>
-            <Route path="user" element={<Dashboard/>}/>
-          </Route> 
+            <Route path="user" element={<Dashboard/>}>
+              <Route path="profile" element={<UserProfile/>}/>
+              <Route path="orders" element={<UserOrders/>}/>
+            </Route>
+          </Route>
+          </Route>
           <Route path="dashboard" element={<AdminRoute/>}>
-            <Route path="admin" element={<AdminDashboard/>}/>
+            <Route path="admin" element={<AdminDashboard/>}>
+              <Route path="manage-users" element={<ManageUsers/>}/>
+              <Route path="create-collection" element={<CreateCollection/>}/>
+              <Route  path="create-product" element={<CreateProduct/>}/>
+
+            </Route>
           </Route>
           <Route path="*" element={<ErrorPage/>} />
         </Route>

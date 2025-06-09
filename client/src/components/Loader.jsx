@@ -12,7 +12,6 @@ const Loader = ({path = "login"}) => {
     const navigate = useNavigate()
     const location = useLocation()
 
-    console.log(count)
     useEffect (()=>{
         const interval = setInterval(()=>{
             setCount((prevValue)=>--prevValue)

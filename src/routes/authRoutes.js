@@ -1,5 +1,5 @@
 import express from 'express'
-import { signUp,login,logOut } from '../controllers/authControllers.js'
+import { signUp,login,logOut, testController } from '../controllers/authControllers.js'
 import { isAdmin, isLoggedIn } from '../middlewares/authMiddlewares.js'
 
 const router = express.Router()
@@ -18,5 +18,7 @@ router.get("/admin-auth",isLoggedIn,isAdmin,(req,res)=>{
         ok : true
     })
 })
+
+router.get("/test",isLoggedIn,isAdmin,testController)
 
 export default router
