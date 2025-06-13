@@ -30,20 +30,17 @@ function App() {
           <Route path="login" element={<Login/>} />
           <Route path="signup" element={<SignUp/>} />
           <Route path="cart" element={<Cart/>} />
-          <Route>
           <Route path="dashboard" element={<PrivateRoute/> }>
             <Route path="user" element={<Dashboard/>}>
               <Route path="profile" element={<UserProfile/>}/>
               <Route path="orders" element={<UserOrders/>}/>
             </Route>
           </Route>
-          </Route>
           <Route path="dashboard" element={<AdminRoute/>}>
             <Route path="admin" element={<AdminDashboard/>}>
               <Route path="manage-users" element={<ManageUsers/>}/>
               <Route path="create-collection" element={<CreateCollection/>}/>
               <Route  path="create-product" element={<CreateProduct/>}/>
-
             </Route>
           </Route>
           <Route path="*" element={<ErrorPage/>} />

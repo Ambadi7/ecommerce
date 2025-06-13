@@ -4,6 +4,7 @@ import cookieParser from 'cookie-parser'
 import morgan from 'morgan'
 import authRoutes from './routes/authRoutes.js'
 import collectionRoutes from './routes/collectionRoutes.js'
+import productRoutes from './routes/productRoutes.js'
 import crypto from "crypto"
 
 const app = express()
@@ -15,6 +16,7 @@ app.use(express.json())
 
 app.use("/api/v1/auth",authRoutes)
 app.use("/api/v1/collection",collectionRoutes)
+app.use("/api/v1/product",productRoutes)
 
 // const key = crypto.randomBytes(64).toString("hex")
 // console.log(key)
