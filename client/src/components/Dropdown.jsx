@@ -17,8 +17,8 @@ const Dropdown = () => {
         <h1 onClick={toggle}>{auth.user.name}</h1>
         
         <div className={` flex-col origin-top-left absolute left-2 mt-2   ${open ? "flex" : "hidden"} `}>
-            <h1 className=' block px-4 py-1 '>{auth.user.role}</h1>
-            <Link to={`/dashboard/${auth.user.role ==="ADMIN" ? "admin" : "user"}`} className=' block px-4 py-1'>dashboard</Link>
+            <h1 className=' block px-4 py-1 ' onClick={toggle}>{auth.user.role}</h1>
+            <Link to={`/dashboard/${auth.user.role ==="ADMIN" ? "admin" : "user"}`} className=' block px-4 py-1' onClick={toggle}>dashboard</Link>
         </div>
     </div>
   )

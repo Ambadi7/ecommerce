@@ -17,7 +17,7 @@ const AdminDashboard = () => {
             </div>
             
         </div>
-        <div className=' p-10 w-2/3 bg-blue-500'>
+        <div className=' p-10 w-2/3 bg-gray-400'>
             <Outlet/>
         </div>
     </div>
