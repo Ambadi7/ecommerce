@@ -16,6 +16,9 @@ import UserOrders from "./pages/user/UserOrders"
 import ManageUsers from "./pages/admin/ManageUsers"
 import CreateCollection from "./pages/admin/CreateCollection"
 import CreateProduct from "./pages/admin/CreateProduct"
+import Product from "./pages/admin/Product"
+import { UpdateProduct } from "./pages/admin/UpdateProduct"
+import SingleProduct from "./pages/SingleProduct"
 
 function App() {
   
@@ -30,6 +33,7 @@ function App() {
           <Route path="login" element={<Login/>} />
           <Route path="signup" element={<SignUp/>} />
           <Route path="cart" element={<Cart/>} />
+          <Route path="singleproduct" element={<SingleProduct/>} />
           <Route path="dashboard" element={<PrivateRoute/> }>
             <Route path="user" element={<Dashboard/>}>
               <Route path="profile" element={<UserProfile/>}/>
@@ -41,6 +45,8 @@ function App() {
               <Route path="manage-users" element={<ManageUsers/>}/>
               <Route path="create-collection" element={<CreateCollection/>}/>
               <Route  path="create-product" element={<CreateProduct/>}/>
+              <Route path="products" element={<Product/>}/>
+              <Route path="update-product/:slug" element={<UpdateProduct/>}/>
             </Route>
           </Route>
           <Route path="*" element={<ErrorPage/>} />

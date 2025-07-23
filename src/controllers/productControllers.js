@@ -112,6 +112,7 @@ export const productPhoto = async (req,res) =>{
     }
 }
 
+//product delete
 
 export const deleteProduct = async (req,res) => {
     try{
@@ -157,8 +158,9 @@ export const updateProduct = async (req,res) =>{
             })
         }
 
+        
         //photo validation
-        if(!photo &&photo.size>1000000){
+        if(!photo && photo.size>1000000){
             res.status(400).json({
                 success : false,
                 message : "photo is required and should be less than 1MB"
@@ -191,6 +193,114 @@ export const updateProduct = async (req,res) =>{
             success : false ,
             message :`Error in update product ${error}`,
             error
+        })
+    }
+}
+
+//filter component
+
+export const filterProduct = async (req,res) => {
+    try{
+        const {checked,radio} = req.body 
+        let args = { }
+
+        //we will have collection in the args so fullfil its value with checked
+        if(checked.length>0){
+            args.collection = checked
+        }
+
+        //user can select only one radio so we can directly cheched value using mongodb therory
+
+        if(radio.length) {
+            args.price ={$gte : radio[0],$lte : radio[1]}
+        }
+
+        const products = await Product.find(args)
+        res.status(200).json({
+            success : true,
+            message : 'filterd successfully',
+            products
+        })
+    }catch(error){
+        console.log(error)
+        res.status(500).json({
+            success : false,
+            message : `Error while filtering products ${error}`,
+            error
+        })
+    }
+}
+
+//total count products
+//estimatedDocumentCount() quickly gives you an approximate number of documents in a MongoDB collection. It's fast but may not be exact. Use it when you need a quick count and perfect accuracy isn't required.
+export const productCount = async (req,res) => {
+    try{
+        const totalProducts = await Product.find({}).estimatedDocumentCount();
+        res.status(200).json({
+            success : true,
+            totalProducts
+        })
+    }catch(error){
+        console.log(error)
+        res.status(500).json({
+            success : false,
+            message : `Error in product count${error}`,
+            error
+        })
+    }
+}
+
+//for pagination
+//product list based on page
+
+export const productList = async (req ,res) => {
+    try{
+        const perPage =3
+        const page =req.params.page ? req.params.page : 1
+        const products = await Product.find({})
+            .select("-photo")
+            .skip((page-1)*perPage)
+            .limit(perPage)
+            .sort({createdAt: -1})
+        res.status(200).json({
+            success :true,
+            products
+        })
+
+    }catch(error){
+        console.log(error)
+        res.status(500).json({
+            success : false,
+            message : `Error in product list ${error}`,
+            error
+        })
+    }
+}
+
+export const searchProduct = async(req,res) => {
+    try{
+        //grab the keyword from the url
+        const {keyword} = req.params
+        //find the keyword from the name or description of the product
+        // if the keyword is present either in name or description we will display it
+        //the "options" value "i" the case insenstive
+
+        const results = await Product
+            .find({
+                $or : [
+                    { name : { $regex : keyword , $options : "i"}},
+                    {description : {$regex :keyword, $options : "i"}},
+                ],
+            })
+            .select("-photo")
+        res.json(results)
+
+    }catch(error){
+        console.log(error)
+        res.status(400).json({
+            success : false ,
+            message : `Error in Search Product API ${error}`,
+            error,
         })
     }
 }

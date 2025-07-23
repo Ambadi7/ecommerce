@@ -14,6 +14,7 @@ const AdminDashboard = () => {
                 <Link to={"manage-users"}>Manage Users</Link>
                 <Link to={"create-collection"}>Create Collection</Link>
                 <Link to={"create-product"}>Create Product</Link>
+                <Link to={"products"}>Products</Link>
             </div>
             
         </div>

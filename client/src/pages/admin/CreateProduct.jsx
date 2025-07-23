@@ -5,14 +5,14 @@ import { Select } from 'antd'
 const {Option} = Select
 
 const CreateProduct = () => {
-  const [collection,setCollection] = useState([]) 
+  const [collections,setCollections] = useState([])
+  const [collection,setCollection] = useState("") 
   const [file,setFile] = useState("")
   const [name,setName] = useState("")
   const [description,setDescription] = useState("")
   const [price,setPrice] = useState("")
   const [quantity,setQuantity] = useState("")
   const [shipping,setShipping] = useState(false)
-
   //Create product Handle Create
   const handleCreate = async(e) =>{
     e.preventDefault()
@@ -26,9 +26,16 @@ const CreateProduct = () => {
       productData.append("quantity",quantity)
       productData.append("shipping",shipping)
       const {data} = await axios.post("/api/v1/product/create-product",productData)
-      if(data.success){
+      if(data && data.success){
         toast.success(data.message)
         console.log(productData)
+        setCollection("")
+        setFile("")
+        setName("")
+        setDescription("")
+        setPrice("")
+        setQuantity("")
+        setShipping("")
       }
       else{
         toast.error(data.message)
@@ -42,15 +49,16 @@ const CreateProduct = () => {
 
   useEffect(()=>{
     getAllCollection()
+    //eslint-disable-next-line
   },[])
 
   //fetch collection
   const getAllCollection = async () => {
     try{
       const {data} = await axios.get("/api/v1/collection/get-allcollection")
-      if(data.success){
-        
-        setCollection(data.collection)
+      console.log(data)
+      if(data && data.success){
+        setCollections(data.collection)
         console.log(collection)
       }
     }catch(error){
@@ -62,7 +70,7 @@ const CreateProduct = () => {
     <div>CreateProduct
 
       <div>
-        <form className='flex flex-col gap-4 p-5 text-black'>
+        <form onSubmit={handleCreate} className='flex flex-col gap-4 p-5 text-black'>
         
           <Select
           placeholder="Choose Collection" 
@@ -74,7 +82,7 @@ const CreateProduct = () => {
           className='w-96 '
           >
             {
-              collection && collection.map ((item) => (
+              collections && collections.map ((item) =>(
                   <Option key={item._id} value={item._id}>{item.name}</Option>
               ))
             }
@@ -103,7 +111,7 @@ const CreateProduct = () => {
 
           <div className='flex flex-col gap-4'>
             <div className='w-96 '>
-              <input type="text" placeholder='Enter Your Name'
+              <input type="text" placeholder='Enter Name'
               value={name}
               onChange={(e)=>setName(e.target.value)}
               required

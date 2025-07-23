@@ -69,8 +69,8 @@ const CreateCollection = () => {
   //fetch all collection from backend
   const getAllCollection = async () =>{
     try{
-      const {data} = await axios.get 
-      if(data.success){
+      const {data} = await axios.get("/api/v1/collection/get-allcollection")
+      if(data && data.success){
         setCollection(data.collection)
         // toast.success(`Successfully fetch all collection`)
         
