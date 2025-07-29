@@ -66,7 +66,7 @@ const Home = () => {
       //hide loading indicator 
       setLoading(false)
       //add new products to existing ones
-      setProducts([...products, ...data?.products])
+      setProducts([...products, ...data.products])
 
 
     }catch(error){

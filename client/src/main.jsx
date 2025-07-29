@@ -5,7 +5,7 @@ import './index.css'
 import App from './App.jsx'
 import { AuthContextProvider } from '../context/AuthContext.jsx'
 import "slick-carousel/slick/slick.css";
-import SearchContextProvider from '../context/SearchContext.jsx'
+import { SearchContextProvider } from '../context/SearchContext.jsx'
 
 createRoot(document.getElementById('root')).render(
   <AuthContextProvider>

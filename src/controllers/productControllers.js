@@ -1,5 +1,6 @@
 import fs from "fs"
 import Product from "../models/productSchema.js"
+import Collection from "../models/collectionSchema.js"
 import slugify from "slugify"
 
 export const createProduct = async(req ,res) =>{
@@ -301,6 +302,30 @@ export const searchProduct = async(req,res) => {
             success : false ,
             message : `Error in Search Product API ${error}`,
             error,
+        })
+    }
+}
+
+//products by collection
+export const productsByCollection = async (req,res) => {
+    try{
+        const collection = await Collection.findOne({slug : req.params.slug})
+
+        const products =  await Product.find({collection}).populate("collection")
+
+        res.status(200).json({
+            success : true,
+            message : "Successfully fetched products by collection",
+            collection,
+            products
+        })
+
+    }catch(error){
+        console.log(error)
+        res.status(500).json({
+            success : false ,
+            message : `Error in productsByCollecton ${error}`,
+            error
         })
     }
 }

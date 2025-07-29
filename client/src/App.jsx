@@ -19,6 +19,8 @@ import CreateProduct from "./pages/admin/CreateProduct"
 import Product from "./pages/admin/Product"
 import { UpdateProduct } from "./pages/admin/UpdateProduct"
 import SingleProduct from "./pages/SingleProduct"
+import SearchItem from "./pages/SearchItem"
+import CollectionProduct from "./pages/CollectionProduct"
 
 function App() {
   
@@ -34,6 +36,8 @@ function App() {
           <Route path="signup" element={<SignUp/>} />
           <Route path="cart" element={<Cart/>} />
           <Route path="singleproduct" element={<SingleProduct/>} />
+          <Route path="search-items" element={<SearchItem/>} />
+          <Route path="/collection/:slug" element={<CollectionProduct/>}/>
           <Route path="dashboard" element={<PrivateRoute/> }>
             <Route path="user" element={<Dashboard/>}>
               <Route path="profile" element={<UserProfile/>}/>

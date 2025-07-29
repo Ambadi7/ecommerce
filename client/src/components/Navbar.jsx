@@ -2,18 +2,25 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import { useContext , useState } from 'react'
 import AuthContext from '../../context/AuthContext'
-import SearchContext from '../../context/SearchContext'
+import useCollection from '../hooks/useCollection'
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart'
 import { toast } from 'sonner'
 import axios from 'axios'
 import Dropdown from './Dropdown'
 import Search from './forms/Search'
 
+
 const Navbar = () => {
     const {auth,setAuth} = useContext(AuthContext)
     const [extendNav,setExtendNav] = useState(false)
-    const {value,setValue} = useContext(SearchContext)
-   
+    const [openCollection , setOpenCollection ] = useState(false)
+    const collections =useCollection()
+
+    const toggle =()=>{
+        setOpenCollection(value=>!value)
+     }
+    
+   console.log(collections)
 
     const handleLogout = async (e) =>{
         e.preventDefault()
@@ -44,7 +51,8 @@ const Navbar = () => {
                         </svg>
                     </a>
 
-                    <Search/>
+                        <Search/>
+
                     <ul className={` absolute md:static items-stretch  space-x-3  md:flex transition-all duration-500 ${extendNav ? "flex flex-col  gap-6 left-[79vw] top-20" : "left-[900px] top-[-100px]"}`}>
                         <li className="flex">
                             <Link to={"/"} rel="noopener noreferrer"  className="flex items-center px-4 -mb-1 border-b-2 border-transparent">Home </Link>
@@ -70,7 +78,21 @@ const Navbar = () => {
                             : 
                             <ul className={`items-stretch  space-x-3  md:flex ${extendNav ? "flex flex-col gap-6" : ""}`}>
                                 <li className="flex">
-                                    <Link to={"collection"} rel="noopener noreferrer"  className="flex items-center px-4 -mb-1 border-b-2 border-transparent">Collection</Link>
+                                    <Link onClick={toggle} rel="noopener noreferrer"  className="flex items-center px-4 -mb-1 border-b-2 border-transparent">Collection
+                                        <div className={` flex-col top-16 absolute    ${openCollection ? "flex" : "hidden"} `}>
+                                                    <Link onClick={toggle} to={"/collection"} className=' block px-4 py-1 ' >Allcollection</Link>
+                                                    {
+                                                        collections.map((item) => {
+                                                            return (
+                                                                <div>
+                                                                    <Link to={`/collection/${item.slug}`}>{item.name}</Link>
+                                                                </div>
+                                                            )
+                                                        })
+                                                    }
+                                        </div>
+                                    </Link>
+                                    
                                 </li>
                                 
                                 <li className="flex">

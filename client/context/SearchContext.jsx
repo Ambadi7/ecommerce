@@ -1,17 +1,17 @@
 import { useState , createContext } from "react";
-
 const SearchContext = createContext()
-const SearchContextProvider = ({ children }) =>{
-    const [auth,setAuth] =useState ({
+
+export const SearchContextProvider = ({ children }) => {
+    const [values,setValues] = useState({
         keyword : "",
         results : [],
     })
 
-    return(
-        <SearchContext.Provider value={[auth,setAuth]}>
+    return (
+        <SearchContext.Provider value={[values,setValues]}>
             {children}
         </SearchContext.Provider>
     )
 }
 
-export default SearchContextProvider
+export default SearchContext
