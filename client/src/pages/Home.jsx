@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState ,useContext } from 'react'
 import Banner from '../components/Banner'
 import { toast } from 'sonner'
 import axios from 'axios'
 import { Link } from 'react-router-dom'
 import { Checkbox,Radio } from "antd";
 import { prices } from '../Data/Data'
+import CartContext from '../../context/CartContext'
 
 
 const Home = () => {
@@ -15,6 +16,7 @@ const Home = () => {
   const [totalProducts ,setTotalProducts] = useState(0)
   const [page,setPage] = useState(1)
   const [loading,setLoading] = useState(false)
+  const [cart,setCart] = useContext(CartContext)
 
   useEffect(
     () =>{getAllCollection(),
@@ -31,7 +33,7 @@ const Home = () => {
       console.log(data)
       if(data && data.success){
         setCollections(data.collection)
-        console.log(collections)
+        
       }
     }catch(error){
       console.log(error)
@@ -47,7 +49,7 @@ const Home = () => {
       
       if(data && data.success){
         setProducts(data.products)
-        console.log(products)
+        
       }
     }catch(error){
       setLoading(false)
@@ -184,6 +186,15 @@ const Home = () => {
                         <h1 className='text-gray-800'>{item.price}</h1>
                         <div className="card-actions justify-end px-6 p-2">
                           <button className=" flex items-center justify-center w-full p-3 font-semibold tracking-wide rounded-md bg-orange-600 text-gray-50">Buy Now</button>
+                          <button onClick={()=> {
+                            setCart([...cart,item])
+                            localStorage.setItem(
+                              "cart",
+                              JSON.stringify([...cart,item])
+                            )
+                            toast.success("Item added to cart")
+                          }} 
+                          className=" flex items-center justify-center w-full p-3 font-semibold tracking-wide rounded-md bg-orange-600 text-gray-50">Add to cart</button>
                         </div>
                       </div>
                     </Link>
@@ -212,10 +223,7 @@ const Home = () => {
             </div>
           </div>
         </div>
-
-      </div>
-      
-      
+      </div> 
     </div>
   )
 }

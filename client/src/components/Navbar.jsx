@@ -2,6 +2,7 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import { useContext , useState } from 'react'
 import AuthContext from '../../context/AuthContext'
+import CartContext from '../../context/CartContext'
 import useCollection from '../hooks/useCollection'
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart'
 import { toast } from 'sonner'
@@ -15,6 +16,7 @@ const Navbar = () => {
     const [extendNav,setExtendNav] = useState(false)
     const [openCollection , setOpenCollection ] = useState(false)
     const collections =useCollection()
+    const [cart] = useContext(CartContext)
 
     const toggle =()=>{
         setOpenCollection(value=>!value)
@@ -78,25 +80,25 @@ const Navbar = () => {
                             : 
                             <ul className={`items-stretch  space-x-3  md:flex ${extendNav ? "flex flex-col gap-6" : ""}`}>
                                 <li className="flex">
-                                    <Link onClick={toggle} rel="noopener noreferrer"  className="flex items-center px-4 -mb-1 border-b-2 border-transparent">Collection
+                                    <div onClick={toggle} rel="noopener noreferrer"  className="flex items-center px-4 -mb-1 border-b-2 border-transparent">Collection
                                         <div className={` flex-col top-16 absolute    ${openCollection ? "flex" : "hidden"} `}>
                                                     <Link onClick={toggle} to={"/collection"} className=' block px-4 py-1 ' >Allcollection</Link>
                                                     {
                                                         collections.map((item) => {
                                                             return (
-                                                                <div>
+                                                                <div key={item._id}>
                                                                     <Link to={`/collection/${item.slug}`}>{item.name}</Link>
                                                                 </div>
                                                             )
                                                         })
                                                     }
                                         </div>
-                                    </Link>
+                                    </div>
                                     
                                 </li>
                                 
                                 <li className="flex">
-                                    <Link to={"cart"} rel="noopener noreferrer"  className="flex items-center px-4 -mb-1 border-b-2 border-transparent"><ShoppingCartIcon/></Link>
+                                    <Link to={"cart"} rel="noopener noreferrer"  className="flex items-center px-4 -mb-1 border-b-2 border-transparent"><ShoppingCartIcon/>{cart?.length}</Link>
                                 </li>
                                 {/* { 
                                     auth.user && 

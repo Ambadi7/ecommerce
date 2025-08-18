@@ -2,6 +2,7 @@ import config from "./src/config/config.js"
 import app from "./src/app.js"
 import colors from 'colors'
 import mongoose from "mongoose"
+import Razorpay from "razorpay"
 
 
 
@@ -20,6 +21,11 @@ import mongoose from "mongoose"
         }
     }
 )()
+
+export const instance = new Razorpay({
+    key_id : config.RAZORPAY_API_KEY,
+    key_secret : config.RAZORPAY_API_SECRET
+})
 
 const PORT = config.PORT
 app.listen(PORT , ()=>{

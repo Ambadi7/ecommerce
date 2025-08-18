@@ -24,6 +24,7 @@ const userSchema = new mongoose.Schema({
         required : true,
     },
     address : {
+        //if using textarea set type as empty object {}
         type : String,
         required : true ,
         maxLength :[100,"address should not exceed 100 chars"],

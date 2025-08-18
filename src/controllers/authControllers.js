@@ -1,7 +1,6 @@
 import User from "../models/userSchema.js";
 import config from "../config/config.js";
 import JWT from "jsonwebtoken"
-import { token } from "morgan";
 
 
 export const cookieOptions ={
@@ -141,6 +140,36 @@ export const logOut = async (req,res) => {
         res.status(500).json({
             success : false ,
             message :  `Error in Logout ${error}`,
+            error
+        })
+    }
+}
+
+//update Profile
+export const updateProfile = async (req,res) => {
+    try {
+        const { name,email,address,phone, } = req.body
+        const user = await User.findOne({email})
+        const updatedUser = await User.findByIdAndUpdate(
+            user._id,
+            {
+                name,
+                email,
+                phone,
+                address
+            },
+            { new : true}
+        )
+        res.status(200).send({
+            success: true,
+            message: "Profile Updated Successfully",
+            updatedUser
+        })
+    }catch(error){
+        console.log(error)
+        res.status(400).json({
+            success : false,
+            message: "Error while in Update",
             error
         })
     }
