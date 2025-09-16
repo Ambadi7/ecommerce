@@ -1,10 +1,16 @@
 
+import axios from 'axios'
 import CartContext from '../../context/CartContext'
 import { useContext, useState } from 'react'
+import AuthContext from '../../context/AuthContext'
 
 const Cart = () => {
   const [cart,setCart] = useContext(CartContext)
+  const {auth} = useContext(AuthContext)
   const [count,setCount] = useState(1)
+  console.log(auth.user)
+
+  
   
   //decerement in button
   const decrement = () => {
@@ -29,6 +35,8 @@ const Cart = () => {
       console.log(error)
     }
   }
+
+  //total price setting
   const totalPrice = () => {
     try{
       let total = 0
@@ -40,6 +48,46 @@ const Cart = () => {
         currency : "INR",
       })
     }catch(error) {
+      console.log(error)
+    }
+  }
+
+  //handle check out
+  const handleCheckout = async (amount) => {
+    try{
+
+      const cleanAmount = Number(
+        amount.toString().replace(/[^\d.-]/g,"")
+      )
+      console.log("Sending clean amount:",cleanAmount)
+      const {data:keyData} = await axios.get(`/api/v1/product/getkey`)
+      const {key} = keyData
+      const {data :orderData} = await axios.post(`/api/v1/product/payment`,{amount:cleanAmount})
+      const {order} = orderData
+      console.log(order)
+      console.log(key)
+      // Open Razorpay Checkout
+      const options = {
+        key: key, // Replace with your Razorpay key_id
+        amount: cleanAmount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+        currency: 'INR',
+        name: 'Ecommerce',
+        description: 'Test Transaction',
+        order_id: order.id, // This is the order_id created in the backend
+        callback_url: 'api/v1/product/payment-verification', // Your success URL
+        prefill: {
+          name: auth?.user?.name || 'your name',
+          email: auth?.user?.email || "your email",
+          contact: auth?.user?.phone || ""
+        },
+        theme: {
+          color: '#F37254'
+        },
+      };
+
+      const rzp = new window.Razorpay(options);
+      rzp.open();
+    }catch(error){
       console.log(error)
     }
   }
@@ -86,6 +134,13 @@ const Cart = () => {
             <h1>CheckOut</h1>
             <h1>Price details</h1>
             <h1>Total Amount :{totalPrice()}</h1>
+
+            <button
+             onClick={()=> {handleCheckout(totalPrice())}}
+             className='w-3/5 p-2 bg-green-500 rounded-md' 
+             >Proceeed To Buy</button>
+
+
 
           </div>
 

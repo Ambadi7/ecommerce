@@ -3,6 +3,7 @@ import Product from "../models/productSchema.js"
 import Collection from "../models/collectionSchema.js"
 import slugify from "slugify"
 import { instance } from "../../server.js"
+import config from "../config/config.js"
 
 export const createProduct = async(req ,res) =>{
     try{
@@ -359,6 +360,41 @@ export const processPayment = async (req,res) =>{
         res.status(500).json({
             success : false,
             message : `Payment processing failed ${error}` ,
+            error
+        })
+    }
+}
+
+// getkey to frontend
+export const getKey = (req,res) => {
+    try{
+
+        res.status(200).json({
+            key : config.RAZORPAY_API_KEY
+        })
+    }catch(error){
+        console.log(error)
+        res.status(500).json({
+            success : false,
+            message : "Error in fetching API Key",
+            error
+        })
+    }
+}
+
+export const paymentVerification = async (req,res) => {
+    try{
+        console.log(req.body)
+        res.status(200).json({
+            success : true,
+            message : "Payment Successfull"
+        })
+
+    }catch(error) {
+        console.log(`Verification error ${error}`)
+        res.status(500).json({
+            success:false,
+            message:"Verification Error",
             error
         })
     }
